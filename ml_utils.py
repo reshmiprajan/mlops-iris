@@ -2,9 +2,13 @@ from sklearn import datasets
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score
+from sklearn.svm import SVC
+
 
 # define a Gaussain NB classifier
-clf = GaussianNB()
+clf1 = GaussianNB()
+clf2=SVC(kernel='linear') 
+
 
 # define the class encodings and reverse encodings
 classes = {0: "Iris Setosa", 1: "Iris Versicolour", 2: "Iris Virginica"}
@@ -17,12 +21,20 @@ def load_model():
 
     # do the test-train split and train the model
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
-    clf.fit(X_train, y_train)
+    clf1.fit(X_train, y_train)
+    clf2.fit(X_train, y_train)
 
     # calculate the print the accuracy score
-    acc = accuracy_score(y_test, clf.predict(X_test))
-    print(f"Model trained with accuracy: {round(acc, 3)}")
-
+    acc = accuracy_score(y_test, clf1.predict(X_test))
+    acc1 = accuracy_score(y_test, clf2.predict(X_test))
+    if acc>acc1:
+        clf=clf1
+    else:
+        clf=clf2
+    fin_acc=max(acc,acc1)
+    print(f"Model trained with accuracy: {round(fin_acc, 3)}")
+    return clf
+clf=load_model()   
 
 # function to predict the flower using the model
 def predict(query_data):
@@ -39,3 +51,4 @@ def retrain(data):
 
     # fit the classifier again based on the new data obtained
     clf.fit(X, y)
+    
