@@ -27,14 +27,14 @@ def load_model():
     # calculate the print the accuracy score
     acc = accuracy_score(y_test, clf1.predict(X_test))
     acc1 = accuracy_score(y_test, clf2.predict(X_test))
-    if acc>acc1 :
+    if acc>acc1:
         clf=clf1
     else:
         clf=clf2
-
     fin_acc=max(acc,acc1)
     print(f"Model trained with accuracy: {round(fin_acc, 3)}")
-
+    return clf
+clf=load_model()   
 
 # function to predict the flower using the model
 def predict(query_data):
@@ -51,3 +51,4 @@ def retrain(data):
 
     # fit the classifier again based on the new data obtained
     clf.fit(X, y)
+    
